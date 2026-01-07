@@ -1,0 +1,260 @@
+:root {
+  --bg-dark: #0f172a;
+  --card-bg: #1e293b;
+  --input-bg: #334155;
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  
+  --accent-cyan: #38bdf8; 
+  --accent-cyan-hover: #0284c7;
+  
+  --border-color: #475569;
+  --danger-red: #f43f5e;
+}
+
+.feed-container {
+  max-width: 850px;
+  width: 100%;
+  padding: 50px 20px;
+  margin: 0 auto;
+}
+
+.home-centered {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* Header stuff */
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 50px;
+  border-bottom: 2px solid var(--accent-cyan); 
+  padding-bottom: 25px;
+}
+
+h1 {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: var(--accent-cyan); 
+  margin: 0;
+  text-shadow: 0 4px 12px rgba(56, 189, 248, 0.3);
+}
+
+.user-section {
+  text-align: right;
+}
+
+.user-info {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+  display: block;
+}
+
+.username-highlight {
+  color: var(--accent-cyan);
+  font-weight: 700;
+  margin-left: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.logout-button {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  padding: 8px 20px;
+  font-size: 0.8rem;
+  border-radius: 50px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.3s ease;
+}
+
+.logout-button:hover {
+  border-color: var(--danger-red);
+  color: var(--danger-red);
+  background: rgba(244, 63, 94, 0.1);
+}
+
+/* --- Cards --- */
+.create-post-card, .review-card, .auth-card {
+  background: var(--card-bg);
+  border-radius: 24px;
+  padding: 30px;
+  box-shadow: 0 10px 40px -10px rgba(0,0,0,0.5);
+  border: 1px solid rgba(255,255,255,0.05);
+  margin-bottom: 30px;
+  position: relative;
+  overflow: hidden;
+}
+
+.create-post-card::before, .auth-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: var(--accent-cyan);
+}
+
+.create-post-card h3, .auth-card h2 {
+  color: var(--text-primary);
+  margin-top: 0;
+  margin-bottom: 25px;
+}
+
+.auth-card h2 {
+  text-align: center;
+  font-size: 2rem;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 18px;
+  background: #1e293b; 
+  border: 2px solid rgba(255, 255, 255, 0.2); 
+  border-radius: 16px;
+  color: white;
+  font-family: inherit;
+  font-size: 1rem;
+  transition: all 0.3s;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--accent-cyan);
+  background: #151e32;
+  box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.1);
+}
+
+.action-btn {
+  width: 100%;
+  padding: 18px;
+  background-color: var(--accent-cyan);
+  color: #0f172a; 
+  border-radius: 16px;
+  font-weight: 800;
+  font-size: 1.1rem;
+  letter-spacing: 0.02em;
+  box-shadow: 0 4px 20px rgba(56, 189, 248, 0.4);
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.action-btn:hover {
+  transform: translateY(-2px);
+  background-color: var(--accent-cyan-hover);
+  box-shadow: 0 8px 25px rgba(56, 189, 248, 0.5);
+}
+
+.search-container {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 50px;
+}
+
+.search-input {
+  background: var(--card-bg);
+  margin-bottom: 0;
+}
+
+.sort-select {
+  width: auto;
+  min-width: 200px;
+  background: var(--card-bg);
+  margin-bottom: 0;
+}
+
+.review-card {
+  display: flex;
+  gap: 25px;
+  transition: transform 0.3s ease, border-color 0.3s;
+}
+
+.review-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent-cyan);
+}
+
+.like-button {
+  background: rgba(56, 189, 248, 0.1);
+  color: var(--accent-cyan);
+  width: 55px;
+  height: 55px;
+  border-radius: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  margin-bottom: 8px;
+  transition: all 0.2s;
+}
+
+.like-button:hover {
+  background: var(--accent-cyan);
+  color: #0f172a;
+  transform: scale(1.1) rotate(-10deg);
+}
+
+.restaurant-name {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.posted-date {
+  color: var(--accent-cyan);
+  font-size: 0.85rem;
+  font-weight: 500;
+  opacity: 0.8;
+  margin-left: 12px;
+}
+
+.post-title {
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  font-weight: 400;
+  margin: 5px 0 15px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.star-badge {
+  background: rgba(250, 204, 21, 0.15);
+  color: #facc15;
+  padding: 4px 12px;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  border: 1px solid rgba(250, 204, 21, 0.2);
+  margin-left: 10px;
+}
+
+.post-body {
+  line-height: 1.7;
+  color: #cbd5e1;
+  font-size: 1.05rem;
+}
+
+.delete-icon {
+  color: var(--text-secondary);
+  opacity: 0.5;
+  padding: 8px;
+  transition: all 0.2s;
+}
+.delete-icon:hover {
+  opacity: 1;
+  color: var(--danger-red);
+  transform: scale(1.1);
+}

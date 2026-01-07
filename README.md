@@ -41,11 +41,11 @@ Check out the live application here: **[Link to your deployed Frontend]** *(Note
 
 ## 📸 Screenshots
 
-### Login Page
-*(Place a screenshot of your login page here. Example: `![Login](./screenshots/login.png)`)*
+### Post a Review
+![Post review](./screenshots/Post-review.png)
 
 ### Main Feed
-*(Place a screenshot of your feed page here)*
+![Main Feed](./screenshots/Reviews-Feed.png)
 
 ---
 

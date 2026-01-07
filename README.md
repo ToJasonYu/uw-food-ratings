@@ -2,10 +2,10 @@
 
 > A full-stack community platform where University of Waterloo students can rate, review, and discover the best (and worst) food on campus.
 
-![Project Banner](https://img.shields.io/badge/Status-Live-success) ![License](https://img.shields.io/badge/License-MIT-blue)
+![Project Banner](https://img.shields.io/badge/Status-Live-success)
 
 ## 🌐 Live Demo
-Check out the live application here: **[Link to your deployed Frontend]** *(Note: The backend runs on a free instance, so the first request might take 30-50 seconds to wake up!)*
+Check out the live application here: **https://uw-food-ratings-frontend.onrender.com/**
 
 ---
 

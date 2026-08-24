@@ -12,6 +12,7 @@ const FeedPage = () => {
 
   const currentUserId = Number(localStorage.getItem('userId'));
   const currentUsername = localStorage.getItem('username');
+  const isAdmin = localStorage.getItem('isAdmin') === 'true';
   const token = localStorage.getItem('token');
   const authHeaders = { headers: { Authorization: `Bearer ${token}` } };
 
@@ -200,7 +201,7 @@ const FeedPage = () => {
                         </span>
                       </div>
                       
-                      {review.userId === currentUserId && (
+                      {(review.userId === currentUserId || isAdmin) && (
                           <button onClick={() => handleDelete(review.id)} className="delete-icon" title="Delete Post">
                               🗑️
                           </button>

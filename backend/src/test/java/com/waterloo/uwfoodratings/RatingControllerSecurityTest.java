@@ -31,6 +31,9 @@ class RatingControllerSecurityTest {
     @MockitoBean
     private VoteRepository voteRepository;
 
+    @MockitoBean
+    private UserRepository userRepository;
+
     @Test
     void createRatingWithNoTokenIsRejected() throws Exception {
         mockMvc.perform(post("/api/ratings")
@@ -55,11 +58,28 @@ class RatingControllerSecurityTest {
 
         Rating existingRating = new Rating(10L, ownerId, "REV", "Pho", 5, "great", 0, LocalDateTime.now());
         when(ratingRepository.findById(10L)).thenReturn(Optional.of(existingRating));
+        when(userRepository.findById(attackerId)).thenReturn(Optional.of(new User(attackerId, "attacker", "hash", false)));
 
         String attackerToken = jwtService.generateToken(attackerId);
 
         mockMvc.perform(delete("/api/ratings/10")
                         .header("Authorization", "Bearer " + attackerToken))
                 .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void adminCanDeleteSomeoneElsesRating() throws Exception {
+        Long ownerId = 1L;
+        Long adminId = 2L;
+
+        Rating existingRating = new Rating(10L, ownerId, "REV", "Pho", 5, "great", 0, LocalDateTime.now());
+        when(ratingRepository.findById(10L)).thenReturn(Optional.of(existingRating));
+        when(userRepository.findById(adminId)).thenReturn(Optional.of(new User(adminId, "admin", "hash", true)));
+
+        String adminToken = jwtService.generateToken(adminId);
+
+        mockMvc.perform(delete("/api/ratings/10")
+                        .header("Authorization", "Bearer " + adminToken))
+                .andExpect(status().isOk());
     }
 }

@@ -31,10 +31,11 @@ const LoginPage = () => {
         return;
       }
 
-      const { token, userId, username: loggedInUsername } = response.data;
+      const { token, userId, username: loggedInUsername, isAdmin } = response.data;
       localStorage.setItem('token', token);
       localStorage.setItem('userId', userId);
       localStorage.setItem('username', loggedInUsername);
+      localStorage.setItem('isAdmin', String(isAdmin));
 
       navigate('/feed');
 

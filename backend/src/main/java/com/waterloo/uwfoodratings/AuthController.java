@@ -36,7 +36,7 @@ public class AuthController {
         if (user.isPresent() && passwordEncoder.matches(loginRequest.getPassword(), user.get().getPassword())) {
             User authenticatedUser = user.get();
             String token = jwtService.generateToken(authenticatedUser.getId());
-            return new AuthResponse(token, authenticatedUser.getId(), authenticatedUser.getUsername());
+            return new AuthResponse(token, authenticatedUser.getId(), authenticatedUser.getUsername(), authenticatedUser.isAdmin());
         } else {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials");
         }

@@ -41,7 +41,7 @@ class AuthControllerTest {
             return u;
         });
 
-        String registerBody = objectMapper.writeValueAsString(new User(null, "alice", "correct horse battery staple"));
+        String registerBody = objectMapper.writeValueAsString(new User(null, "alice", "correct horse battery staple", false));
 
         mockMvc.perform(post("/api/auth/register")
                         .contentType("application/json")
@@ -49,10 +49,10 @@ class AuthControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.password").value(org.hamcrest.Matchers.not("correct horse battery staple")));
 
-        User storedUser = new User(1L, "alice", passwordEncoder.encode("correct horse battery staple"));
+        User storedUser = new User(1L, "alice", passwordEncoder.encode("correct horse battery staple"), false);
         when(userRepository.findByUsername("alice")).thenReturn(Optional.of(storedUser));
 
-        String loginBody = objectMapper.writeValueAsString(new User(null, "alice", "correct horse battery staple"));
+        String loginBody = objectMapper.writeValueAsString(new User(null, "alice", "correct horse battery staple", false));
 
         mockMvc.perform(post("/api/auth/login")
                         .contentType("application/json")
@@ -65,10 +65,10 @@ class AuthControllerTest {
 
     @Test
     void loginWithWrongPasswordIsRejected() throws Exception {
-        User storedUser = new User(1L, "alice", passwordEncoder.encode("correct horse battery staple"));
+        User storedUser = new User(1L, "alice", passwordEncoder.encode("correct horse battery staple"), false);
         when(userRepository.findByUsername("alice")).thenReturn(Optional.of(storedUser));
 
-        String loginBody = objectMapper.writeValueAsString(new User(null, "alice", "wrong password"));
+        String loginBody = objectMapper.writeValueAsString(new User(null, "alice", "wrong password", false));
 
         mockMvc.perform(post("/api/auth/login")
                         .contentType("application/json")

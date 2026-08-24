@@ -13,10 +13,12 @@ public class RatingController {
 
     private final RatingRepository ratingRepository;
     private final VoteRepository voteRepository;
+    private final UserRepository userRepository;
 
-    public RatingController(RatingRepository ratingRepository, VoteRepository voteRepository) {
+    public RatingController(RatingRepository ratingRepository, VoteRepository voteRepository, UserRepository userRepository) {
         this.ratingRepository = ratingRepository;
         this.voteRepository = voteRepository;
+        this.userRepository = userRepository;
     }
 
     private Long authenticatedUserId(HttpServletRequest request) {
@@ -58,7 +60,11 @@ public class RatingController {
         Long userId = authenticatedUserId(request);
         Rating rating = ratingRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Rating not found"));
-        if (rating.getUserId() != null && rating.getUserId().equals(userId)) {
+
+        boolean isOwner = rating.getUserId() != null && rating.getUserId().equals(userId);
+        boolean isAdmin = userRepository.findById(userId).map(User::isAdmin).orElse(false);
+
+        if (isOwner || isAdmin) {
             ratingRepository.deleteById(id);
         } else {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You can only delete your own posts.");

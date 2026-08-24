@@ -41,7 +41,7 @@ class AuthControllerTest {
             return u;
         });
 
-        String registerBody = objectMapper.writeValueAsString(new User(null, "alice", "correct horse battery staple", false));
+        String registerBody = objectMapper.writeValueAsString(new AuthRequest("alice", "correct horse battery staple"));
 
         mockMvc.perform(post("/api/auth/register")
                         .contentType("application/json")
@@ -52,7 +52,7 @@ class AuthControllerTest {
         User storedUser = new User(1L, "alice", passwordEncoder.encode("correct horse battery staple"), false);
         when(userRepository.findByUsername("alice")).thenReturn(Optional.of(storedUser));
 
-        String loginBody = objectMapper.writeValueAsString(new User(null, "alice", "correct horse battery staple", false));
+        String loginBody = objectMapper.writeValueAsString(new AuthRequest("alice", "correct horse battery staple"));
 
         mockMvc.perform(post("/api/auth/login")
                         .contentType("application/json")
@@ -68,7 +68,7 @@ class AuthControllerTest {
         User storedUser = new User(1L, "alice", passwordEncoder.encode("correct horse battery staple"), false);
         when(userRepository.findByUsername("alice")).thenReturn(Optional.of(storedUser));
 
-        String loginBody = objectMapper.writeValueAsString(new User(null, "alice", "wrong password", false));
+        String loginBody = objectMapper.writeValueAsString(new AuthRequest("alice", "wrong password"));
 
         mockMvc.perform(post("/api/auth/login")
                         .contentType("application/json")

@@ -12,10 +12,12 @@ public class AuthController {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
-    public AuthController(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public AuthController(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
     }
 
     @PostMapping("/register")
@@ -28,11 +30,13 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public User login(@RequestBody User loginRequest) {
+    public AuthResponse login(@RequestBody User loginRequest) {
         Optional<User> user = userRepository.findByUsername(loginRequest.getUsername());
 
         if (user.isPresent() && passwordEncoder.matches(loginRequest.getPassword(), user.get().getPassword())) {
-            return user.get();
+            User authenticatedUser = user.get();
+            String token = jwtService.generateToken(authenticatedUser.getId());
+            return new AuthResponse(token, authenticatedUser.getId(), authenticatedUser.getUsername());
         } else {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials");
         }

@@ -23,11 +23,18 @@ const LoginPage = () => {
 
     try {
       const response = await axios.post(url, { username, password });
-      
-      
-      const user = response.data;
-      localStorage.setItem('userId', user.id);
-      localStorage.setItem('username', user.username);
+
+      if (isRegistering) {
+        setIsRegistering(false);
+        setError("");
+        setPassword("");
+        return;
+      }
+
+      const { token, userId, username: loggedInUsername } = response.data;
+      localStorage.setItem('token', token);
+      localStorage.setItem('userId', userId);
+      localStorage.setItem('username', loggedInUsername);
 
       navigate('/feed');
 

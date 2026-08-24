@@ -6,17 +6,18 @@ const HomePage = () => {
 
   return (
     <div className="home-centered">
-      <h1 style={{ fontSize: '3rem', marginBottom: '10px' }}>🍔 UW Food Ratings</h1>
-      <p style={{ fontSize: '1.2rem', color: '#b3b3b3', marginBottom: '40px' }}>
-        The front page of campus dining.
+      <h1 style={{ fontSize: '2.5rem', marginBottom: '10px' }}>UW Food Ratings</h1>
+      <p style={{ fontSize: '1.1rem', color: '#8b9198', marginBottom: '32px' }}>
+        Restaurant and dish reviews from UW students.
       </p>
-      
-      <button 
-        style={{ 
-          padding: '15px 40px', 
-          fontSize: '1.2rem', 
-          cursor: 'pointer',
-          maxWidth: '200px'
+
+      <button
+        className="action-btn"
+        style={{
+          padding: '14px 36px',
+          fontSize: '1rem',
+          width: 'auto',
+          maxWidth: '220px'
         }}
         onClick={() => navigate('/login')}
       >

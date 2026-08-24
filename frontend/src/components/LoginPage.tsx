@@ -58,7 +58,7 @@ const LoginPage = () => {
         </h2>
 
         {error && (
-          <div style={{ color: '#f43f5e', marginBottom: '15px', textAlign: 'center' }}>
+          <div style={{ color: '#d1554a', marginBottom: '15px', textAlign: 'center' }}>
             {error}
           </div>
         )}
@@ -84,15 +84,15 @@ const LoginPage = () => {
           </button>
         </form>
 
-        <p style={{ marginTop: '20px', textAlign: 'center', color: '#94a3b8' }}>
+        <p style={{ marginTop: '20px', textAlign: 'center', color: '#8b9198' }}>
           {isRegistering ? "Already have an account?" : "New to UW Food Ratings?"}
-          <button 
+          <button
             onClick={() => setIsRegistering(!isRegistering)}
-            style={{ 
-                background: 'none', 
-                border: 'none', 
-                color: '#38bdf8', 
-                fontWeight: 'bold', 
+            style={{
+                background: 'none',
+                border: 'none',
+                color: '#d97757',
+                fontWeight: 600,
                 cursor: 'pointer',
                 marginLeft: '8px',
                 fontSize: '1rem',

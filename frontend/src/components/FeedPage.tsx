@@ -12,6 +12,8 @@ const FeedPage = () => {
 
   const currentUserId = Number(localStorage.getItem('userId'));
   const currentUsername = localStorage.getItem('username');
+  const token = localStorage.getItem('token');
+  const authHeaders = { headers: { Authorization: `Bearer ${token}` } };
 
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("newest");
@@ -22,12 +24,12 @@ const FeedPage = () => {
   const [comment, setComment] = useState("");
 
   useEffect(() => {
-    if (!currentUserId) {
+    if (!currentUserId || !token) {
       navigate('/login');
       return;
     }
     fetchReviews();
-  }, [navigate, currentUserId]);
+  }, [navigate, currentUserId, token]);
 
   const fetchReviews = () => {
     axios.get(`${API_BASE}/api/ratings`)
@@ -38,17 +40,16 @@ const FeedPage = () => {
   };
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault(); 
-    const newReviewRaw = { 
-      userId: currentUserId,
-      restaurantName, 
-      dishName, 
-      stars, 
+    e.preventDefault();
+    const newReviewRaw = {
+      restaurantName,
+      dishName,
+      stars,
       comment,
       upvotes: 0
     };
 
-    axios.post(`${API_BASE}/api/ratings`, newReviewRaw)
+    axios.post(`${API_BASE}/api/ratings`, newReviewRaw, authHeaders)
       .then(() => {
         fetchReviews();
         setRestaurantName("");
@@ -60,7 +61,7 @@ const FeedPage = () => {
   };
 
   const handleUpvote = (id: number) => {
-    axios.put(`${API_BASE}/api/ratings/${id}/upvote?userId=${currentUserId}`)
+    axios.put(`${API_BASE}/api/ratings/${id}/upvote`, null, authHeaders)
       .then(response => {
         const updatedReview = response.data;
         setReviews(reviews.map(r => r.id === id ? updatedReview : r));
@@ -75,7 +76,7 @@ const FeedPage = () => {
   const handleDelete = (id: number) => {
     if (!window.confirm("Are you sure you want to delete this post?")) return;
 
-    axios.delete(`${API_BASE}/api/ratings/${id}?userId=${currentUserId}`)
+    axios.delete(`${API_BASE}/api/ratings/${id}`, authHeaders)
       .then(() => {
         setReviews(reviews.filter(r => r.id !== id));
       })
@@ -199,7 +200,7 @@ const FeedPage = () => {
                         </span>
                       </div>
                       
-                      {(review.userId === currentUserId || currentUserId === 1) && (
+                      {review.userId === currentUserId && (
                           <button onClick={() => handleDelete(review.id)} className="delete-icon" title="Delete Post">
                               🗑️
                           </button>

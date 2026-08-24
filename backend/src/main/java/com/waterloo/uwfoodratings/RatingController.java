@@ -1,6 +1,7 @@
 package com.waterloo.uwfoodratings;
 
 import org.springframework.web.bind.annotation.*;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
@@ -18,20 +19,27 @@ public class RatingController {
         this.voteRepository = voteRepository;
     }
 
+    private Long authenticatedUserId(HttpServletRequest request) {
+        return (Long) request.getAttribute(JwtAuthFilter.AUTH_USER_ID_ATTRIBUTE);
+    }
+
     @GetMapping
     public List<Rating> getAllRatings() {
         return ratingRepository.findAll();
     }
 
     @PostMapping
-    public Rating createRating(@RequestBody Rating rating) {
+    public Rating createRating(@RequestBody Rating rating, HttpServletRequest request) {
+        rating.setUserId(authenticatedUserId(request));
         rating.setTimestamp(LocalDateTime.now());
         rating.setUpvotes(0);
         return ratingRepository.save(rating);
     }
 
     @PutMapping("/{id}/upvote")
-    public Rating upvoteRating(@PathVariable Long id, @RequestParam Long userId) {
+    public Rating upvoteRating(@PathVariable Long id, HttpServletRequest request) {
+        Long userId = authenticatedUserId(request);
+
         if (voteRepository.existsByUserIdAndRatingId(userId, id)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "You already voted for this!");
         }
@@ -46,10 +54,11 @@ public class RatingController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteRating(@PathVariable Long id, @RequestParam Long userId) {
+    public void deleteRating(@PathVariable Long id, HttpServletRequest request) {
+        Long userId = authenticatedUserId(request);
         Rating rating = ratingRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Rating not found"));
-        if (userId == 1L || (rating.getUserId() != null && rating.getUserId().equals(userId))) {
+        if (rating.getUserId() != null && rating.getUserId().equals(userId)) {
             ratingRepository.deleteById(id);
         } else {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You can only delete your own posts.");

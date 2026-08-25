@@ -12,6 +12,7 @@ import java.util.Optional;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.options;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -33,6 +34,19 @@ class RatingControllerSecurityTest {
 
     @MockitoBean
     private UserRepository userRepository;
+
+    @Test
+    void corsPreflightOnProtectedEndpointIsNotRejectedForMissingToken() throws Exception {
+        mockMvc.perform(options("/api/ratings")
+                        .header("Origin", "https://uw-food-ratings-frontend.onrender.com")
+                        .header("Access-Control-Request-Method", "POST"))
+                .andExpect(result -> {
+                    int status = result.getResponse().getStatus();
+                    if (status == 401) {
+                        throw new AssertionError("preflight OPTIONS request was rejected by the auth filter");
+                    }
+                });
+    }
 
     @Test
     void createRatingWithNoTokenIsRejected() throws Exception {

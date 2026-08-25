@@ -29,7 +29,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        if (isPublic(request)) {
+        // CORS preflight requests never carry the Authorization header by design,
+        // so they'd always be rejected here before Spring's CORS handling can
+        // even respond to them, blocking the real request in every browser.
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod()) || isPublic(request)) {
             filterChain.doFilter(request, response);
             return;
         }

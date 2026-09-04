@@ -163,8 +163,7 @@ the `app_user` table (or just re-register test accounts) rather than write a one
 migration is the right call for a real production system with real users who can't be
 asked to re-register, but it adds a permanent code path (detecting "is this a legacy
 plaintext value") that has no purpose once every account has migrated. For a project
-at this stage, that complexity isn't worth it — it exists only to describe the
-trade-off for whoever reads this next (including future-me, in an interview).
+at this stage, that complexity isn't worth it.
 
 ## Config notes
 
